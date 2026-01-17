@@ -228,6 +228,16 @@ article, aside, figcaption, figure, footer, header, nav, section {
     vertical-align: middle;
 }
 
+.btn-primary
+ {
+    background: #00c4c4;
+    color: #fff;
+}
+
+.btn-primary:hover, .btn-primary:active {
+    background: #00b2b2;
+}
+
 .comp-datepicker .btn {
     display: inline-block;
     position: relative;
