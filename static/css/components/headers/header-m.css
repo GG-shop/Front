@@ -146,8 +146,15 @@
 /* 맵핀 부분 */
 .addessPin-container{
     display: flex;
-    min-width: 50px;
+    min-width: 20px;
+    height: 46px;
     padding: 8px;
+}
+.addessPin-container path{
+    transition: .3s fill;
+}
+.addessPin-container:hover path{
+    fill: #333;
 }
 .addessPin-container i{
     font-size: 22px;
