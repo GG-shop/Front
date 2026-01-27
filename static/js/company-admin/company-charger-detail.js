@@ -77,6 +77,9 @@ const filterDropdown = filterContainer?.querySelector('.select2-dropdown');
 const filterRendered = filterContainer?.querySelector('.select2-selection-rendered');
 const filterOptions = filterContainer?.querySelectorAll('.select2-results-option');
 
+// 초기 상태 닫힘 고정
+filterDropdown?.classList.add('none');
+
 // 선택박스 클릭 -> 열기/닫기
 filterSelection?.addEventListener('click', (e) => {
     // 문서 클릭 닫기와 충돌 방지
