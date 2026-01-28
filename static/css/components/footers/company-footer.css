@@ -1,5 +1,5 @@
 /* footer */
-.Footer-module__container__npT3S {
+.footer-module-container {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -13,7 +13,7 @@
     border-top: 1px solid #f2f4f6;
 }
 
-.Footer-module__address__xdP3d {
+.footer-module-address {
     font-size: 12px;
     font-weight: 400;
     line-height: 1.5;
@@ -22,16 +22,16 @@
     gap: 8px 16px;
 }
 
-.Footer-module__address__xdP3d .Footer-module__copyright__Za3qS {
+.footer-module-address .footer-module-copyright {
     font-weight: 700;
 }
 
-.Footer-module__terms__nKTop ul {
+.footer-module-terms ul {
     display: flex;
     gap: 16px;
 }
 
-.Footer-module__terms__nKTop ul .Footer-module__term__1y-1U {
+.footer-module-terms ul .footer-module-term {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.5;
@@ -39,12 +39,12 @@
     align-items: center;
 }
 
-.Footer-module__terms__nKTop ul .Footer-module__term__1y-1U a {
+.footer-module-terms ul .footer-module-term a {
     text-decoration: underline;
     text-underline-offset: 4px;
 }
 
-.Footer-module__terms__nKTop ul .Footer-module__term__1y-1U:last-child:before {
+.footer-module-terms ul .footer-module-term:last-child:before {
     content: "·";
     display: inline-block;
     padding-right: 16px;
