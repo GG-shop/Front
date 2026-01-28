@@ -1,75 +1,101 @@
 // 충전소 등록 폼
-// - 필수 입력 검증
-// - 완료 버튼 클릭 시 실행
-// - 필수 필드가 비어있을 경우 에러 문구 표시
-// - 에러 없을 경우에만 submit 진행
+// - 완료 버튼으로 submit 시에만 검증 실행(엔터 제출 차단)
+// - 필수 입력 필드가 비어있을 경우 에러 문구/스타일 적용
+// - 입력 값이 들어오면 에러 상태 해제
 
 document.addEventListener('DOMContentLoaded', () => {
     // 폼 요소
     const form = document.getElementById('new-request');
+    if (!form) return;
 
-    // 필수 입력 필드
-    const requiredFields = form.querySelectorAll('.form-field.required');
+    // 취소/완료 버튼
+    const cancelBtn = form.querySelector('.btn-cancel');
+    const submitBtn = form.querySelector('.btn-submit');
 
-    // 폼 상단 공통 에러 메세지 (에러 없을 경우 null)
-    const formError = document.querySelector('.form-error');
+    // 완료 버튼으로 제출했는지 여부(엔터 제출 차단용)
+    let isSubmitByButton = false;
 
-    // submit 이벤트 가로채기
-    form.addEventListener('submit', (e) => {
-        // 임시) 기능 콘솔 확인용, form 기본 submit 방지
-        // 서버 구현시 submit 제거 여부 확인 필요
+    // 필수 입력 필드 목록(필드/입력요소/에러문구)
+    const fields = [...form.querySelectorAll('.form-field.required')].map((field) => ({
+        field,
+        input: field.querySelector('input, textarea'),
+        errorMsg: field.querySelector('.field-error'),
+    }));
+
+    // 취소 버튼 클릭 시: submit 방지
+    cancelBtn?.addEventListener('click', (e) => {
         e.preventDefault();
+        isSubmitByButton = false;
 
-        // 상태: false(정상), true(에러)
-        let hasError = false;
+        // 필요하면 이동 처리
+        // history.back();
+        // location.href = '/company-admin/charger-list.html';
+    });
 
-        // 이전 에러 상태 초기화
-        requiredFields.forEach((field) => {
-            field.classList.remove('is-error');
+    // 완료 버튼 클릭 시: 제출 플래그 ON
+    submitBtn?.addEventListener('click', () => {
+        isSubmitByButton = true;
+    });
 
-            const errorMsg = field.querySelector('.field-error');
-            if (errorMsg) {
-                errorMsg.hidden = true;
-            }
-        });
-
-        // 공통 에러 메세지 숨김
-        if (formError) {
-            formError.hidden = true;
-        }
-
-        // 필수 입력 필드 검사하기
-        requiredFields.forEach((field) => {
-            // input 또는 textarea 찾기
-            const input = field.querySelector('input, textarea');
-
-            // 값이 없거나 공백인 경우
-            if (!input || !input.value.trim()) {
-                // 에러로 판단
-                hasError = true;
-
-                // 해당 부분 에러 상태로 변경
-                field.classList.add('is-error');
-
-                // 필드 안에 있는 에러 메세지 요소 선택
-                const errorMsg = field.querySelector('.field-error');
-
-                // 에러 메세지가 존재하면 화면에 표시
-                if (errorMsg) {
-                    errorMsg.hidden = false;
-                }
-            }
-        });
-
-        // 에러가 하나라도 있을 경우 제출 중단
-        if (hasError) {
-            if (formError) {
-                formError.hidden = false;
-            }
+    // submit 이벤트 처리
+    form.addEventListener('submit', (e) => {
+        // 완료 버튼이 아닌 방식(엔터 키 등) 제출 차단
+        if (!isSubmitByButton) {
+            e.preventDefault();
             return;
         }
 
-        // 여기까지 왔을 경우 오류 없는 상태, 실제 submit 진행
+        // 화면 확인 단계이므로 기본 submit 방지
+        e.preventDefault();
+
+        // 첫 번째 에러 입력창 저장(포커스 이동용)
+        let firstErrorInput = null;
+
+        // 필수 입력 검사 + 에러 초기화/적용
+        // 값이 없는 입력창 에러 처리
+        // 첫 번째 에러창만 기억
+        fields.forEach(({ field, input, errorMsg }) => {
+            // 이전 에러 상태 제거
+            field.classList.remove('is-error');
+            if (errorMsg) errorMsg.hidden = true;
+
+            // 입력 값이 없거나 공백인 경우
+            if (!input || !input.value.trim()) {
+                // 해당 영역을 에러 상태로 표시
+                field.classList.add('is-error');
+                // 에러 메세지 표시
+                if (errorMsg) errorMsg.hidden = false;
+                // 첫 번째 에러창 저장
+                if (!firstErrorInput && input) firstErrorInput = input;
+            }
+        });
+
+        // 에러 뱔견시 첫 번째 포커스 이동 (submit 중단)
+        if (firstErrorInput) {
+            // 상태 초기화: 다음 제출시 엔터 제출 방지
+            isSubmitByButton = false;
+            // 첫 번쨰 에러 창으로 포커스 이동
+            firstErrorInput.focus();
+            return;
+        }
+
+        // 이상 없음 확인
         console.log('제출 가능 상태');
+
+        // ▼ 서버 연동 시 실제 submit
+        // isSubmitByButton = false;
+        // form.submit();
+    });
+
+    // 입력이 시작되면 해당 필드 에러 해제
+    fields.forEach(({ field, input, errorMsg }) => {
+        input?.addEventListener('input', () => {
+            // 공백이 아닌 값이 입력 되었을 경우만 에러 해제
+            if (!input.value.trim()) return;
+            // 에러 스타일 제거
+            field.classList.remove('is-error');
+            // 에러 메세지 숨김
+            if (errorMsg) errorMsg.hidden = true;
+        });
     });
 });
