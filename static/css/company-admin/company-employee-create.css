@@ -195,8 +195,6 @@ form footer {
     transition: 0.15s ease-in-out;
 }
 
-
-/* 특이사항 영역 */
 textarea {
     resize: none;
 }

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>기업 메인 - 거래목록</title>
+        <title>기업 - 회원(직원) 목록</title>
         <!-- favicon -->
         <link rel="shortcut icon" href="https://wabiz-static-dev.s3.ap-northeast-2.amazonaws.com/static/favicon/favicon.png" type="image/x-icon" />
 
@@ -14,16 +14,16 @@
         <link rel="stylesheet" href="/static/css/common/reset.css" />
 
         <!-- 공통 css -->
-        <link rel="stylesheet" href="/static/css/common/common.css">
+        <link rel="stylesheet" href="/static/css/common/common.css" />
 
         <!-- fontawesome 꾸며진 폰트 -->
-        <link rel="stylesheet" href="/static/css/common/fontawesome.css">
+        <link rel="stylesheet" href="/static/css/common/fontawesome.css" />
 
         <!-- 유틸 css -->
         <link rel="stylesheet" href="/static/css/common/util.css" />
 
         <!-- 개별 css 스타일 -->
-        <link rel="stylesheet" href="/static/css/company-admin/company-list.css" />
+        <link rel="stylesheet" href="/static/css/company-admin/company-employee-list.css" />
     </head>
     <body>
         <!-- 컨테이너 -->
@@ -31,7 +31,7 @@
             <!-- 목록 헤더 영역 -->
             <div class="content-header">
                 <div class="box-tit">
-                    <h2 class="fz-36 fc-1 fw-bold">거래 내역</h2>
+                    <h2 class="fz-36 fc-1 fw-bold">임직원 목록</h2>
                 </div>
             </div>
             <!-- 바디 영역 -->
@@ -39,44 +39,59 @@
                 <!-- 탭 선택 영역 -->
                 <div class="comp-tab">
                     <a class="tab selected" href="#">
-                        <span class="tab-item">일간 내역</span>
+                        <span class="tab-item">가입일순</span>
                     </a>
                     <a class="tab" href="#">
-                        <span class="tab-item">주간 내역</span>
+                        <span class="tab-item">이름순</span>
                     </a>
                     <a class="tab" href="#">
-                        <span class="tab-item">월간 내역</span>
+                        <span class="tab-item">사원번호순</span>
                     </a>
                 </div>
 
                 <!-- 선택된 탭의 내용 -->
                 <div class="comp-tab-content selected">
                     <section class="wrap-section wrap-datagrid">
-                        <!-- 날짜 조회 영역 -->
-                        <form>
+                        <!-- 검색 필터 영역 -->
+                        <form id="filter-form">
                             <div class="wrap-filter">
                                 <div class="inner-filter">
-                                    <!-- 조회기간 -->
                                     <div class="box-left">
-                                        <div class="item-filter">
-                                            <div class="filter-tit">
-                                                <p class="fz-12 fc-2">조회일자</p>
-                                            </div>
-                                            <!-- 날짜 선택 박스 -->
-                                            <div class="box-filter">
-                                                <div class="comp-datepicker">
-                                                    <div class="inner-datepicker">
-                                                        <!-- 캘린더 이미지 -->
-                                                        <i class="icon icon-calendar"></i>
-                                                        <!-- ★ -->
-                                                        <input type="date" id="datepicker" class="tf-comm datepicker-range" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                    <!-- 검색 종류(필터) -->
+                                    <span class="select2 select2-container select2-container-default small select2-container-below select2-container-focus filter-select2" style="width: 120px">
+                                        <span class="selection">
+                                            <span class="select2-selection select2-selection-single">
+                                                <span class="select2-selection-rendered" title="10 Row">가입일순</span>
+                                                <!-- 추가 -->
+                                                <span class="select2-container select2-container-default select2-container-open" style="position: absolute">
+                                                    <span class="select2-dropdown small select2-dropdown-below none" style="width: 140px; margin-top: 25px;">
+                                                        <span class="select2-search select2-search-dropdown select2-search-hide">
+                                                            <input class="select2-search-field" type="search" />
+                                                        </span>
+                                                        <span class="select2-results">
+                                                            <ul class="select2-results-options">
+                                                                <li class="select2-results-option" data-filter-mode="installDate">가입일순</li>
+                                                                <li class="select2-results-option" data-filter-mode="name">이름순</li>
+                                                                <li class="select2-results-option" data-filter-mode="number">사원번호순</li>
+                                                            </ul>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                                <!-- 목록 열림 화살표 -->
+                                                <span class="select2-selection-arrow">
+                                                    <b></b>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <!-- 드롭다운 옵션 영역 -->
+                                        <span class="dropdown-wrapper"></span>
+                                    </span>
+
                                     </div>
+
                                     <div class="box-right">
-                                        <button type="submit" class="btn btn-tertiary-mint btn-icon" id="date-choice">
+                                        <button type="submit" class="btn btn-tertiary-mint btn-icon" id="filter-search-btn">
                                             조회
                                         </button>
                                     </div>
@@ -114,7 +129,7 @@
                                                                         <div class="list-header-cell-resize"></div>
                                                                         <div class="list-cell-label-container list-header-cell-sorted-none">
                                                                             <div class="list-header-cell-label">
-                                                                                <span class="list-header-cell-text">충전일자</span>
+                                                                                <span class="list-header-cell-text">가입일자</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -124,7 +139,7 @@
                                                                         <div class="list-header-cell-resize"></div>
                                                                         <div class="list-cell-label-container list-header-cell-sorted-none">
                                                                             <div class="list-header-cell-label">
-                                                                                <span class="list-header-cell-text">거래번호</span>
+                                                                                <span class="list-header-cell-text">사원번호</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -134,7 +149,7 @@
                                                                         <div class="list-header-cell-resize"></div>
                                                                         <div class="list-cell-label-container list-header-cell-sorted-none">
                                                                             <div class="list-header-cell-label">
-                                                                                <span class="list-header-cell-text">고객명 / 연락처</span>
+                                                                                <span class="list-header-cell-text">사원명</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -144,7 +159,7 @@
                                                                         <div class="list-header-cell-resize"></div>
                                                                         <div class="list-cell-label-container list-header-cell-sorted-none">
                                                                             <div class="list-header-cell-label">
-                                                                                <span class="list-header-cell-text">충전기 정보 / 충전량(kWh)</span>
+                                                                                <span class="list-header-cell-text">부서/직책</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -154,7 +169,7 @@
                                                                         <div class="list-header-cell-resize"></div>
                                                                         <div class="list-cell-label-container list-header-cell-sorted-none">
                                                                             <div class="list-header-cell-label">
-                                                                                <span class="list-header-cell-text">결제금액</span>
+                                                                                <span class="list-header-cell-text">이메일</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -171,113 +186,113 @@
                                                                 <div class="list-center-cols-container" style="height: 384px; width: 1559px">
                                                                     <!-- 행 1 -->
                                                                     <div class="list-row-no-focus list-row list-row-level-0 list-row-position-absolute list-row-even list-row-first" style="transform: translateY(0px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 2 -->
                                                                     <div class="list-row-no-focus list-row list-row-level-0 list-row-position-absolute list-row-odd" style="transform: translateY(48px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 3 -->
                                                                     <div class="list-row list-row-level-0 list-row-position-absolute list-row-even list-row-no-focus" style="transform: translateY(96px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 4 -->
                                                                     <div class="list-row-no-focus list-row list-row-level-0 list-row-position-absolute list-row-odd" style="transform: translateY(144px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 5 -->
                                                                     <div class="list-row-no-focus list-row list-row-level-0 list-row-position-absolute list-row-even" style="transform: translateY(192px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 6 -->
                                                                     <div class="list-row list-row-level-0 list-row-position-absolute list-row-odd list-row-focus" style="transform: translateY(240px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 고객명 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-focus list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 7 -->
                                                                     <div class="list-row-no-focus list-row list-row-level-0 list-row-position-absolute list-row-even" style="transform: translateY(288px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
 
                                                                     <!-- 행 8 -->
                                                                     <div class="list-row list-row-level-0 list-row-position-absolute list-row-odd list-row-last list-row-no-focus" style="transform: translateY(336px); height: 48px">
-                                                                        <!-- 충전일자 -->
+                                                                        <!-- 가입일자 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-center-aligned-cell list-cell-value" style="left: 0px; width: 312px">2026-01-19</div>
-                                                                        <!-- 거래번호 -->
+                                                                        <!-- 사원번호 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 312px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보 -->
+                                                                        <!-- 사원명 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 624px; width: 312px">-</div>
-                                                                        <!-- 충전기 정보/충전량(kWh) -->
+                                                                        <!-- 부서/직책 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 936px; width: 312px">-</div>
-                                                                        <!-- 결제 금액 -->
+                                                                        <!-- 이메일 -->
                                                                         <div class="list-cell list-cell-not-inline-editing list-cell-normal-height list-right-aligned-cell list-cell-value" style="left: 1248px; width: 311px">-</div>
                                                                     </div>
                                                                 </div>
@@ -313,8 +328,8 @@
                                             <span class="select2-selection select2-selection-single">
                                                 <span class="select2-selection-rendered" title="10 Row">10 Row</span>
                                                 <!-- 추가 -->
-                                                <span class="select2-container select2-container-default select2-container-open" style="position: absolute;">
-                                                    <span class="select2-dropdown small select2-dropdown-below none" style="width: 120px;">
+                                                <span class="select2-container select2-container-default select2-container-open" style="position: absolute">
+                                                    <span class="select2-dropdown small select2-dropdown-below none" style="width: 120px">
                                                         <span class="select2-search select2-search-dropdown select2-search-hide">
                                                             <input class="select2-search-field" type="search" />
                                                         </span>
@@ -368,5 +383,5 @@
             </div>
         </div>
     </body>
-    <script src="/static/js/company-admin/company-list.js"></script>
+    <script src="/static/js/company-admin/company-employee-list.js"></script>
 </html>
